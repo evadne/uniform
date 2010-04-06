@@ -118,14 +118,13 @@ Enjoy!
 			if (plausibleCaptionSourceObject.length == 0)
 			plausibleCaptionSourceObject = element.find("option:first");
 			
-			if (plausibleCaptionSourceObject.hasOwnProperty('text'))
-			caption = plausibleCaptionSourceObject.text();
+			caption = '' || plausibleCaptionSourceObject.text();
 			
 			
 			
 			
 			
-			wrapperObj = divObjPrimitive.clone();
+			wrapperObj = divPrimitive.clone();
 			knobObj = spanPrimitive.clone().addClass(options.knobClass);
 			captionObj = spanPrimitive.clone();
 
@@ -136,48 +135,58 @@ Enjoy!
 			.append(knobObj);
 			
 			captionObj.text(caption);
+			
+			var eventData = {
+			
+				captionObj: captionObj,
+				wrapperObj: wrapperObj
+			
+			}
+			
+			
+			
+			
+			
+			element.bind('change', eventData, function(event) {
 
+				window.console.log("changed, ", event.data.captionObj.text());
+				event.data.captionObj.text($(this).find(":selected").text());
+				window.console.log("changed, ", event.data.captionObj.text());
+				
+				event.data.wrapperObj.removeClass(options.activeClass);
 
+			}).live('focus', eventData, function(event) {
 
+				event.data.wrapperObj.addClass(options.focusClass);
 
+			}).live('blur', eventData, function(event) {
 
-			element.live('change', function() {
+				event.data.wrapperObj.removeClass(options.focusClass);
+				event.data.wrapperObj.removeClass(options.activeClass);
 
-				captionObj.text($(this).find(":selected").text());
-				wrapperObj.removeClass(options.activeClass);
+			}).live('mousedown', eventData, function(event) {
 
-			}).live('focus', function() {
+				event.data.event.data.wrapperObj.addClass(options.activeClass);
 
-				wrapperObj.addClass(options.focusClass);
+			}).live('mouseup', eventData, function(event) {
 
-			}).live('blur', function() {
+				event.data.wrapperObj.removeClass(options.activeClass);
 
-				wrapperObj.removeClass(options.focusClass);
-				wrapperObj.removeClass(options.activeClass);
+			}).live('click', eventData, function(event){
 
-			}).live('mousedown', function() {
+				event.data.wrapperObj.removeClass(options.activeClass);
 
-				wrapperObj.addClass(options.activeClass);
+			}).live('mouseenter', eventData, function(event) {
 
-			}).live('mouseup', function() {
+				event.data.wrapperObj.addClass(options.hoverClass);
 
-				wrapperObj.removeClass(options.activeClass);
+			}).live('mouseleave', eventData, function(event) {
 
-			}).live('click', function(){
+				event.data.wrapperObj.removeClass(options.hoverClass);
 
-				wrapperObj.removeClass(options.activeClass);
+			}).live('keyup', eventData, function(event){
 
-			}).live('mouseenter', function() {
-
-				wrapperObj.addClass(options.hoverClass);
-
-			}).live('mouseleave', function() {
-
-				wrapperObj.removeClass(options.hoverClass);
-
-			}).live('keyup', function(){
-
-				captionObj.text($(this).find(":selected").text());
+				event.data.captionObj.text($(this).find(":selected").text());
 
 			});
 			
