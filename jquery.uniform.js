@@ -1,10 +1,10 @@
+//	Uniform v.1.5
+//	Originally by Josh Pyles at Pixelmatrix
+
+//	uniform/nebula
+//	Evadne Wu at Iridia, 2010
+
 /*
-
-TO DO: Test in all browsers, clean up theme file, prepare documentation, minisite?
-
-Uniform v1.5
-Copyright © 2009 Josh Pyles / Pixelmatrix Design LLC
-http://pixelmatrixdesign.com
 
 Requires jQuery 1.3 or newer
 
