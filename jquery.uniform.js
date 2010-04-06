@@ -105,64 +105,93 @@ Enjoy!
 
 
 
-		function doSelect(elem){
+		function doSelect(element){
 
-			var divTag = $('<div />');
-			var spanTag = $('<span />');
-
-			divTag.addClass(options.selectClass);
-
-			if (options.useID) divTag.attr("id", options.idPrefix + "-" + elem.attr("id"));
+			var divPrimitive = $('<div />');
+			var spanPrimitive = $('<span />');
 			
-			var selected = elem.find(":selected:first");
-			if(selected.length == 0) selected = elem.find("option:first");
+			var caption = '';
 			
-			spanTag.html(selected.text());
+			var plausibleCaptionSourceObject = element.find(":selected:first");
 			
-			elem.css('opacity', 0).wrap(divTag).before(spanTag);
+			if (plausibleCaptionSourceObject.length == 0)
+			plausibleCaptionSourceObject = element.find("option:first");
+			
+			if (plausibleCaptionSourceObject.hasOwnProperty('text'))
+			caption = plausibleCaptionSourceObject.text();
+			
+			
+			
+			
+			
+			wrapperObj = divObjPrimitive.clone();
+			knobObj = spanPrimitive.clone();
+			captionObj = spanPrimitive.clone();
 
-		//	Redefine variables
-		
-			divTag = elem.parent("div");
-			spanTag = elem.siblings("span");
+			wrapperObj
+			.addClass(options.selectClass);
+			.attr("id", (options.useID ? (options.idPrefix + "-" + elem.attr("id")) : ''))
+			.append(captionObj);
+			.append(knobObj);
+			
+			captionObj.text(caption);
 
-			elem.change(function() {
-				spanTag.text(elem.find(":selected").text());
-				divTag.removeClass(options.activeClass);
-			})
-			.focus(function() {
-				divTag.addClass(options.focusClass);
-			})
-			.blur(function() {
-				divTag.removeClass(options.focusClass);
-				divTag.removeClass(options.activeClass);
-			})
-			.mousedown(function() {
-				divTag.addClass(options.activeClass);
-			})
-			.mouseup(function() {
-				divTag.removeClass(options.activeClass);
-			})
-			.click(function(){
-				divTag.removeClass(options.activeClass);
-			})
-			.hover(function() {
-				divTag.addClass(options.hoverClass);
-			}, function() {
-				divTag.removeClass(options.hoverClass);
-			})
-			.keyup(function(){
-				spanTag.text(elem.find(":selected").text());
+
+
+
+
+			element.live('change', function() {
+
+				captionObj.text($(this).find(":selected").text());
+				wrapperObj.removeClass(options.activeClass);
+
+			}).live('focus', function() {
+
+				wrapperObj.addClass(options.focusClass);
+
+			}).live('blur', function() {
+
+				wrapperObj.removeClass(options.focusClass);
+				wrapperObj.removeClass(options.activeClass);
+
+			}).live('mousedown', function() {
+
+				wrapperObj.addClass(options.activeClass);
+
+			}).live('mouseup', function() {
+
+				wrapperObj.removeClass(options.activeClass);
+
+			}).live('click', function(){
+
+				wrapperObj.removeClass(options.activeClass);
+
+			}).live('mouseenter', function() {
+
+				wrapperObj.addClass(options.hoverClass);
+
+			}).live('mouseleave', function() {
+
+				wrapperObj.removeClass(options.hoverClass);
+
+			}).live('keyup', function(){
+
+				captionObj.text($(this).find(":selected").text());
+
 			});
-
-			//handle disabled state
-			if($(elem).attr("disabled")){
-				//box is checked by default, check our box
-				divTag.addClass(options.disabledClass);
-			}
 			
-			$.uniform.noSelect(spanTag);
-			storeElement(elem);
+			wrapperObj.insertAfter(element);
+			element.css('opacity', 0).appendTo(wrapperObj);
+			
+			
+			
+			
+			
+			if($(element).attr("disabled"))
+			wrapperObj.addClass(options.disabledClass);
+			
+			$.uniform.noSelect(knobObj);
+			storeElement(element);
 
 		}
 		
@@ -485,7 +514,7 @@ Enjoy!
 
 		return this.each(function() {
 		
-			if(!$.support.selectOpacity) return;
+		//	if(!$.support.selectOpacity) return;
 
 			var elem = $(this);
 
@@ -508,5 +537,7 @@ Enjoy!
 			}
 
 		});
+		
 	};
+	
 })(jQuery);
