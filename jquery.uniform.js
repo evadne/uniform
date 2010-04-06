@@ -55,6 +55,7 @@ Enjoy!
 
 		options: {
 
+			knobClass: 'knob',
 			selectClass: 'selector',
 			radioClass: 'radio',
 			checkboxClass: 'checker',
@@ -125,13 +126,13 @@ Enjoy!
 			
 			
 			wrapperObj = divObjPrimitive.clone();
-			knobObj = spanPrimitive.clone();
+			knobObj = spanPrimitive.clone().addClass(options.knobClass);
 			captionObj = spanPrimitive.clone();
 
 			wrapperObj
-			.addClass(options.selectClass);
-			.attr("id", (options.useID ? (options.idPrefix + "-" + elem.attr("id")) : ''))
-			.append(captionObj);
+			.addClass(options.selectClass)
+			.attr("id", (options.useID ? (options.idPrefix + "-" + element.attr("id")) : ''))
+			.append(captionObj)
 			.append(knobObj);
 			
 			captionObj.text(caption);
